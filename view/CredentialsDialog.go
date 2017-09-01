@@ -10,8 +10,6 @@ import (
 var log = logging.MustGetLogger("DBMergeMain")
 
 func connectToServer() {
-	log.Info("Trying to connect to server..")
-
 	usernameWidget, err := builder.GetObject("userNameField")
 	utils.CheckError(err)
 
@@ -40,6 +38,28 @@ func connectToServer() {
 
 	control.ConnectToServer(username, password, hostname, port)
 
-	tables := control.GetDatabases()
-	log.Info(tables)
+	constructDatabaseSelection()
+
+	destroyCredentials()
+}
+
+func destroyCredentials() {
+	obj, err := builder.GetObject("credentialsDialog")
+	utils.CheckError(err)
+
+	dialog := obj.(*gtk.Dialog)
+	dialog.Destroy()
+
+}
+
+func constructCredentials() {
+	obj, err := builder.GetObject("credentialsDialog")
+	utils.CheckError(err)
+
+	dialog, ok := obj.(*gtk.Dialog)
+	if !ok {
+		log.Error("object returned from glade file could not be casted to Dialog")
+	}
+
+	dialog.ShowAll()
 }

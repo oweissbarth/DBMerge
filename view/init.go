@@ -31,17 +31,9 @@ func Construct() {
 
 	win.ShowAll()
 
-	obj, err = builder.GetObject("credentialsDialog")
-	utils.CheckError(err)
-
-	dialog, ok := obj.(*gtk.Dialog)
-	if !ok {
-		log.Error("object returned from glade file could not be casted to Dialog")
-	}
-
-	dialog.ShowAll()
-
 	connectSignals(builder)
+
+	constructCredentials()
 
 	gtk.Main()
 }
