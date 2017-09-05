@@ -21,10 +21,8 @@ func (t *Table) GetPrimaryKey() string {
 
 func (t *Table) GetColumns() []string {
 	if t.Columns != nil {
-		log.Debug("Columns are cached.")
 		return t.Columns
 	}
-	log.Debug("Columns are not cached. Querying.")
 
 	rows, err := Con.Query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='" + t.Database.Name + "' AND TABLE_NAME='" + t.Name + "'")
 	utils.CheckError(err)

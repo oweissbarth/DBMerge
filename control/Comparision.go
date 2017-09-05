@@ -33,7 +33,34 @@ func GetAdditions(tableA m.Table, tableB m.Table) []m.Addition {
 
 	for rows.Next() {
 		rows.Scan(&addition)
-		additions = append(additions, m.Addition{addition})
+		additions = append(additions, m.Addition{PrimaryKey: addition})
 	}
 	return additions
+}
+
+func GetDiff(tableA m.Table, tableB m.Table) m.Differential {
+	additions := GetAdditions(tableA, tableB)
+	inverseAdditions := GetAdditions(tableB, tableA)
+
+	var deletions []m.Deletion
+	for _, d := range inverseAdditions {
+		deletions = append(deletions, m.Deletion{d.PrimaryKey})
+	}
+
+	// Find modifications and remove those from additions and deletions
+	var modifications []m.Modification
+
+	for i := 0; i < len(additions); i++ {
+		a := additions[i]
+		for j, d := range deletions {
+			if a.PrimaryKey == d.PrimaryKey {
+				modifications = append(modifications, m.Modification{PrimaryKey: a.PrimaryKey})
+				additions = append(additions[:i], additions[i+1:]...)
+				deletions = append(deletions[:j], deletions[j+1:]...)
+				i--
+				break
+			}
+		}
+	}
+	return m.Differential{additions, deletions, modifications, tableA, tableB}
 }

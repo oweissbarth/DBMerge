@@ -19,11 +19,10 @@ func constructMainComparision(headDBName string, localDBName string, remoteDBNam
 	//remoteTables := remoteDB.GetTables()
 
 	for i := range localTables {
-		additions := control.GetAdditions(localTables[i], headTables[i])
-		deletions := control.GetAdditions(headTables[i], localTables[i])
-
-		log.Info(strconv.Itoa(len(additions)) + " Additions in " + localTables[i].Name)
-		log.Info(strconv.Itoa(len(deletions)) + " Deletions in " + localTables[i].Name)
+		diff := control.GetDiff(localTables[i], headTables[i])
+		log.Info(strconv.Itoa(len(diff.Additions)) + " Additions in " + localTables[i].Name)
+		log.Info(strconv.Itoa(len(diff.Deletions)) + " Deletions in " + localTables[i].Name)
+		log.Info(strconv.Itoa(len(diff.Modifications)) + " Mdodifications in " + localTables[i].Name)
 
 	}
 }
