@@ -1,46 +1,40 @@
 package control
 
 import (
-	"database/sql"
+	"strconv"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // the blank import is required
 	logging "github.com/op/go-logging"
+	"github.com/oweissbarth/DBMerge/model"
 	"github.com/oweissbarth/DBMerge/utils"
 )
 
 var log = logging.MustGetLogger("DBMergeMain")
 
-var con *sql.DB = nil
+var server model.Server
 
+/*ConnectToServer takes the
+ *username, password, hostname and port
+ *and authentificates with the mysql server
+ */
 func ConnectToServer(username string, password string, hostname string, port string) {
-	if con != nil {
-		log.Error("already connected to a server")
-	}
-
-	var err error
-	con, err = sql.Open("mysql", username+":"+password+"@tcp("+hostname+":"+port+")/")
+	portNumbder, err := strconv.Atoi(port)
 	utils.CheckError(err)
+	server = model.Server{hostname, portNumbder, username, password, nil}
 
-	log.Info("Connected to the server")
+	server.Connect()
 }
 
+/*GetDatabases retrieves
+ *all available databases from the mysql server
+ */
 func GetDatabases() []string {
-	if con == nil {
-		log.Error("Could not retrieve database list as we are not connected to a server")
-		return nil
+	dbs := server.GetDatabases()
+
+	names := []string{}
+	for _, db := range dbs {
+		names = append(names, db.Name)
 	}
 
-	rows, err := con.Query("SHOW DATABASES")
-	utils.CheckError(err)
-
-	defer rows.Close()
-
-	dbs := []string{}
-
-	for rows.Next() {
-		var dbName string
-		rows.Scan(&dbName)
-		dbs = append(dbs, dbName)
-	}
-	return dbs
+	return names
 }

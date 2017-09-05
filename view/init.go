@@ -40,6 +40,7 @@ func Construct() {
 
 func connectSignals(builder *gtk.Builder) {
 	builder.ConnectSignals(map[string]interface{}{
-		"connectToServer": connectToServer,
+		"connectButtonHandler": connectToServer,
+		"compareButtonHandler": handleCompareButton,
 	})
 }
