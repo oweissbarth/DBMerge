@@ -7,6 +7,7 @@ import (
 	"github.com/oweissbarth/DBMerge/utils"
 )
 
+/*Server represents a mysql server. It holds login information as well as a list of the databases*/
 type Server struct {
 	Hostname  string
 	Port      int
@@ -15,7 +16,7 @@ type Server struct {
 	Databases []Database
 }
 
-/*ConnectToServer authentificates with the mysql server*/
+/*Connect authentificates with the mysql server*/
 func (s Server) Connect() {
 	if Con != nil {
 		log.Error("already connected to a server")

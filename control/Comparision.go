@@ -38,6 +38,7 @@ func GetAdditions(tableA m.Table, tableB m.Table) []m.Addition {
 	return additions
 }
 
+/*GetDiff return a full differential between two tables*/
 func GetDiff(tableA m.Table, tableB m.Table) m.Differential {
 	additions := GetAdditions(tableA, tableB)
 	inverseAdditions := GetAdditions(tableB, tableA)

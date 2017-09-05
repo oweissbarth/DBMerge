@@ -10,7 +10,11 @@ type Database struct {
 	Tables []Table
 }
 
+/*GetTables returns a list of tables in the database*/
 func (db Database) GetTables() []Table {
+	if db.Tables != nil {
+		return db.Tables
+	}
 	rows, err := Con.Query("SHOW TABLES IN " + db.Name)
 	utils.CheckError(err)
 

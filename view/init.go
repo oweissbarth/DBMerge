@@ -7,6 +7,7 @@ import (
 
 var builder *gtk.Builder
 
+/*Construct reads in the ui description file and sets up the main window*/
 func Construct() {
 	gtk.Init(nil)
 

@@ -22,7 +22,7 @@ func constructMainComparision(headDBName string, localDBName string, remoteDBNam
 		diff := control.GetDiff(localTables[i], headTables[i])
 		log.Info(strconv.Itoa(len(diff.Additions)) + " Additions in " + localTables[i].Name)
 		log.Info(strconv.Itoa(len(diff.Deletions)) + " Deletions in " + localTables[i].Name)
-		log.Info(strconv.Itoa(len(diff.Modifications)) + " Mdodifications in " + localTables[i].Name)
+		log.Info(strconv.Itoa(len(diff.Modifications)) + " Modifications in " + localTables[i].Name)
 
 	}
 }
