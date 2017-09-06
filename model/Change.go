@@ -23,7 +23,20 @@ type Deletion struct {
 
 /*Conflict is a row that modified by multiple tables and is not triviallly mergeable*/
 type Conflict struct {
-	PrimaryKey int
-	Content    string
-	Origin     *Table
+	PrimaryKey    int
+	LocalContent  string
+	RemoteContent string
+	LocalType     ChangeType
+	RemoteType    ChangeType
+	LocalOrigin   *Table
+	RemoteOrigin  *Table
 }
+
+/*ChangeType defines if the differences is an addition, deletion or modification*/
+type ChangeType int
+
+const (
+	ADD ChangeType = 1 + iota
+	DEL
+	MOD
+)

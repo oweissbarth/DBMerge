@@ -49,7 +49,7 @@ func constructMainComparision(headDBName string, localDBName string, remoteDBNam
 		utils.CheckError(err)
 		container.Add(conflictLabel)
 
-		conflictContainer, err := gtk.BoxNew(gtk.ORIENTATION_HORIZONTAL, 15)
+		conflictContainer, err := gtk.BoxNew(gtk.ORIENTATION_VERTICAL, 15)
 		utils.CheckError(err)
 		for j := range patch.Conflicts {
 			conflict, err := gtk.LabelNew(strconv.Itoa(patch.Conflicts[j].PrimaryKey))
@@ -62,10 +62,10 @@ func constructMainComparision(headDBName string, localDBName string, remoteDBNam
 		utils.CheckError(err)
 		container.Add(additionsLabel)
 
-		additionContainer, err := gtk.BoxNew(gtk.ORIENTATION_HORIZONTAL, 15)
+		additionContainer, err := gtk.BoxNew(gtk.ORIENTATION_VERTICAL, 15)
 		utils.CheckError(err)
 		for j := range patch.Additions {
-			addition, err := gtk.LabelNew(strconv.Itoa(patch.Additions[j].PrimaryKey))
+			addition, err := gtk.LabelNew(patch.Additions[j].Content)
 			utils.CheckError(err)
 			additionContainer.Add(addition)
 		}
@@ -76,10 +76,10 @@ func constructMainComparision(headDBName string, localDBName string, remoteDBNam
 		utils.CheckError(err)
 		container.Add(deletionsLabel)
 
-		deletionsContainer, err := gtk.BoxNew(gtk.ORIENTATION_HORIZONTAL, 15)
+		deletionsContainer, err := gtk.BoxNew(gtk.ORIENTATION_VERTICAL, 15)
 		utils.CheckError(err)
 		for j := range patch.Deletions {
-			deletion, err := gtk.LabelNew(strconv.Itoa(patch.Deletions[j].PrimaryKey))
+			deletion, err := gtk.LabelNew(patch.Deletions[j].Content)
 			utils.CheckError(err)
 			deletionsContainer.Add(deletion)
 		}
@@ -90,10 +90,10 @@ func constructMainComparision(headDBName string, localDBName string, remoteDBNam
 		utils.CheckError(err)
 		container.Add(modificationsLabel)
 
-		modificationsContainer, err := gtk.BoxNew(gtk.ORIENTATION_HORIZONTAL, 15)
+		modificationsContainer, err := gtk.BoxNew(gtk.ORIENTATION_VERTICAL, 15)
 		utils.CheckError(err)
 		for j := range patch.Modifications {
-			modification, err := gtk.LabelNew(strconv.Itoa(patch.Modifications[j].PrimaryKey))
+			modification, err := gtk.LabelNew(patch.Modifications[j].Content)
 			utils.CheckError(err)
 			modificationsContainer.Add(modification)
 		}
