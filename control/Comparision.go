@@ -1,6 +1,8 @@
 package control
 
 import (
+	"strings"
+
 	m "github.com/oweissbarth/DBMerge/model"
 	"github.com/oweissbarth/DBMerge/utils"
 )
@@ -23,15 +25,16 @@ func GetAdditions(tableA m.Table, tableB m.Table) []m.Addition {
 		}
 	}
 
-	rows, err := m.Con.Query("SELECT " + tableA.GetPrimaryKey() + " FROM " + tableA.Database.Name + "." + tableA.Name + " AS A WHERE NOT EXISTS(SELECT * FROM " + tableB.Database.Name + "." + tableB.Name + " WHERE " + same + ")")
+	rows, err := m.Con.Query("SELECT " + tableA.GetPrimaryKey() + ", CONCAT_WS(', ', " + strings.Join(columnsA, ",") + ")" + " FROM " + tableA.Database.Name + "." + tableA.Name + " AS A WHERE NOT EXISTS(SELECT * FROM " + tableB.Database.Name + "." + tableB.Name + " WHERE " + same + ")")
 	utils.CheckError(err)
 
 	var additions []m.Addition
 	var addition int
+	var content string
 
 	for rows.Next() {
-		rows.Scan(&addition)
-		additions = append(additions, m.Addition{PrimaryKey: addition})
+		rows.Scan(&addition, &content)
+		additions = append(additions, m.Addition{PrimaryKey: addition, Content: content, Origin: &tableA})
 	}
 	return additions
 }
@@ -43,7 +46,7 @@ func GetDiff(tableA m.Table, tableB m.Table) m.Differential {
 
 	var deletions []m.Deletion
 	for _, d := range inverseAdditions {
-		deletions = append(deletions, m.Deletion{d.PrimaryKey})
+		deletions = append(deletions, m.Deletion{d.PrimaryKey, d.Content, d.Origin})
 	}
 
 	// Find modifications and remove those from additions and deletions
@@ -61,5 +64,8 @@ func GetDiff(tableA m.Table, tableB m.Table) m.Differential {
 			}
 		}
 	}
-	return m.Differential{additions, deletions, modifications, tableA, tableB}
+	return m.Differential{
+		Additions:     additions,
+		Deletions:     deletions,
+		Modifications: modifications}
 }

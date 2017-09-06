@@ -49,6 +49,7 @@ func (t *Table) GetColumns() []string {
 	return t.Columns
 }
 
+/*IsCompatibleWith returns true the given table has the same schema as this table*/
 func (t *Table) IsCompatibleWith(t2 *Table) bool {
 	columns1 := t.GetColumns()
 	columns2 := t2.GetColumns()
