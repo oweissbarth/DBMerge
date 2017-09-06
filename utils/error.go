@@ -15,25 +15,30 @@ func CheckError(err error) {
 	}
 }
 
-func CompareSlices(a, b []string) bool {
-
+func CompareSlices(a, b []string) int {
 	if a == nil && b == nil {
-		return true
+		return -1
 	}
 
 	if a == nil || b == nil {
-		return false
+		return 0
 	}
 
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i := range a {
+	var i int
+	for i = 0; i < min(len(a), len(b)); i++ {
 		if a[i] != b[i] {
-			return false
+			return i
 		}
 	}
+	if len(a) != len(b) {
+		return i
+	}
+	return -1
+}
 
-	return true
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }

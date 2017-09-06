@@ -14,3 +14,8 @@ type Addition struct {
 type Deletion struct {
 	PrimaryKey int
 }
+
+/*Conflict is a row that modified by multiple tables and is not triviallly mergeable*/
+type Conflict struct {
+	PrimaryKey int
+}

@@ -18,6 +18,8 @@ func (db Database) GetTables() []Table {
 	rows, err := Con.Query("SHOW TABLES IN " + db.Name)
 	utils.CheckError(err)
 
+	defer rows.Close()
+
 	for rows.Next() {
 		var table string
 		rows.Scan(&table)

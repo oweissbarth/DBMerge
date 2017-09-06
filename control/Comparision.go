@@ -7,13 +7,11 @@ import (
 
 /*GetAdditions returns a list of a rows in A that are not in B*/
 func GetAdditions(tableA m.Table, tableB m.Table) []m.Addition {
-	columnsA := tableA.GetColumns()
-	columnsB := tableB.GetColumns()
-
-	if !utils.CompareSlices(columnsA, columnsB) {
-		log.Error("The Schema of " + tableA.Database.Name + "." + tableA.Name + " and " + tableB.Database.Name + "." + tableB.Name + " are not the same ")
+	if !tableA.IsCompatibleWith(&tableB) {
 		return nil
 	}
+
+	columnsA := tableA.GetColumns()
 
 	var same string
 

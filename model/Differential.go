@@ -8,3 +8,10 @@ type Differential struct {
 	FromTable     Table
 	ToTable       Table
 }
+
+type Patch struct {
+	Additions     []Addition
+	Deletions     []Deletion
+	Modifications []Modification
+	Conflicts     []Conflict
+}
